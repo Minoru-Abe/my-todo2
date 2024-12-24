@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { InputArea } from "./molecules/InputArea";
 import { CompleteButton } from "./atoms/button/CompleteButton";
@@ -8,6 +8,19 @@ import { RemoveButton } from "./atoms/button/RemoveButton";
 function App() {
   const [incompletedTasks, setIncompletedTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
+
+  useEffect(() => {
+    const fetchIncompleteTasks = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/tasks/incomplete");
+        setIncompletedTasks(response.data);
+      } catch (error) {
+        console.error("Error fetching incomplete tasks:", error);
+      }
+    };
+
+    fetchIncompleteTasks();
+  }, [])
 
   const addTask = async (name, assignee) => {
     try {
@@ -23,20 +36,20 @@ function App() {
     }
   };
 
-  const completeTask = (index) => {
-    const taskToComplete = incompletedTasks[index];
+  const completeTask = (id) => {
+    const taskToComplete = incompletedTasks.find(task => task.id === id);
     setCompletedTasks([...completedTasks, taskToComplete]);
-    setIncompletedTasks(incompletedTasks.filter((_, i) => i !== index));
+    setIncompletedTasks(incompletedTasks.filter(task => task.id !== id));
   };
 
-  const revertTask = (index) => {
-    const taskToRevert = completedTasks[index];
+  const revertTask = (id) => {
+    const taskToRevert = completedTasks.find(task => task.id === id);
     setIncompletedTasks([...incompletedTasks, taskToRevert]);
-    setCompletedTasks(completedTasks.filter((_, i) => i !== index));
+    setCompletedTasks(completedTasks.filter(task => task.id !== id));
   };
 
-  const removeTask = (index) => {
-    setIncompletedTasks(incompletedTasks.filter((_, i) => i !== index));
+  const removeTask = (id) => {
+    setIncompletedTasks(incompletedTasks.filter(task => task.id !== id));
   };
 
   return (
@@ -45,11 +58,11 @@ function App() {
       <div>
         <h2>Incomplete Tasks</h2>
         <ul>
-          {incompletedTasks.map((task, index) => (
-            <li key={index}>
-              {task.name} - {task.assignee}
-              <CompleteButton onClick={() => completeTask(index)} />
-              <RemoveButton onClick={() => removeTask(index)} />
+          {incompletedTasks.map((task) => (
+            <li key={task.id}>
+              {task.id} - {task.name} - {task.assignee}
+              <CompleteButton onClick={() => completeTask(task.id)} />
+              <RemoveButton onClick={() => removeTask(task.id)} />
             </li>
           ))}
         </ul>
@@ -57,10 +70,10 @@ function App() {
       <div>
         <h2>Complete Tasks</h2>
         <ul>
-          {completedTasks.map((task, index) => (
-            <li key={index}>
-              {task.name} - {task.assignee}
-              <RevertButton onClick={() => revertTask(index)} />
+          {completedTasks.map((task) => (
+            <li key={task.id}>
+              {task.id} - {task.name} - {task.assignee}
+              <RevertButton onClick={() => revertTask(task.id)} />
             </li>
           ))}
         </ul>

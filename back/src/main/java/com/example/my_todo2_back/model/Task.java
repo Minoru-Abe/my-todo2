@@ -19,6 +19,10 @@ public class Task {
     @Column(name = "status", nullable = false)
     private String status;
 
+    public Task() {
+
+    }
+
     public Task(String name, String assignee, String status) {
         this.name = name;
         this.assignee = assignee;

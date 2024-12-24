@@ -8,40 +8,40 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tasks")
+@RequestMapping
 @CrossOrigin(origins = "http://localhost:3000")
 public class TaskController {
 
     @Autowired
     private TaskService taskService;
 
-    @GetMapping("/incomplete")
+    @GetMapping("/tasks/incomplete")
     public List<Task> getIncompleteTasks() {
         return taskService.getTasksByStatus("incomplete");
     }
 
-    @GetMapping("/complete")
+    @GetMapping("/tasks/complete")
     public List<Task> getCompleteTasks() {
         return taskService.getTasksByStatus("complete");
     }
 
-    @PostMapping
+    @PostMapping("/tasks")
     public Task createTask(@RequestBody Task task) {
         System.out.println(task);
         return taskService.createTask(task);
     }
 
-    @PutMapping("/complete/{id}")
+    @PutMapping("/tasks/complete/{id}")
     public Task completeTask(@PathVariable Long id) {
         return taskService.completeTask(id);
     }
 
-    @PutMapping("/revert/{id}")
+    @PutMapping("/tasks/revert/{id}")
     public Task revertTask(@PathVariable Long id) {
         return taskService.revertTask(id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/tasks/{id}")
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
     }
