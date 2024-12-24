@@ -9,11 +9,11 @@ function App() {
   const [incompletedTasks, setIncompletedTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
 
-  const addTask = async (task, personInCharge) => {
+  const addTask = async (name, assignee) => {
     try {
       const response = await axios.post("http://localhost:8080/tasks", {
-        name: task,
-        assignee: personInCharge,
+        name: name,
+        assignee: assignee,
         status: "incomplete",
       });
       console.log(response);
@@ -47,7 +47,7 @@ function App() {
         <ul>
           {incompletedTasks.map((task, index) => (
             <li key={index}>
-              {task.task} - {task.personInCharge}
+              {task.name} - {task.assignee}
               <CompleteButton onClick={() => completeTask(index)} />
               <RemoveButton onClick={() => removeTask(index)} />
             </li>
@@ -59,7 +59,7 @@ function App() {
         <ul>
           {completedTasks.map((task, index) => (
             <li key={index}>
-              {task.task} - {task.personInCharge}
+              {task.name} - {task.assignee}
               <RevertButton onClick={() => revertTask(index)} />
             </li>
           ))}

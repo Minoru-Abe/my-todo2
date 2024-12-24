@@ -3,28 +3,28 @@ import { Input } from "../atoms/input/Input"
 import { RegisterButton } from "../atoms/button/RegisterButton"
 
 export const InputArea = ({ onAddTask }) => {
-    const [task, setTask] = useState("");
-    const [personInCharge, setPersonInCharge] = useState("");
+    const [name, setName] = useState("");
+    const [assignee, setAssignee] = useState("");
 
-    const handleTaskChange = useCallback((event) => {
-        setTask(event.target.value);
+    const handleNameChange = useCallback((event) => {
+        setName(event.target.value);
     }, []);
 
-    const handlePersonInChargeChange = useCallback((event) => {
-        setPersonInCharge(event.target.value);
+    const handleAssigneeChange = useCallback((event) => {
+        setAssignee(event.target.value);
     }, []);
 
     const handleRegister = () => {
-        onAddTask(task, personInCharge);
-        setTask("");
-        setPersonInCharge("");
+        onAddTask(name, assignee);
+        setName("");
+        setAssignee("");
     }
 
    return (
         <div>
             <h2>New Task</h2>
-            <Input placeholder="A new task" value={task} onChange={handleTaskChange} />
-            <Input placeholder="Person in charge" value={personInCharge} onChange={handlePersonInChargeChange} />
+            <Input placeholder="Task name" value={name} onChange={handleNameChange} />
+            <Input placeholder="Assignee" value={assignee} onChange={handleAssigneeChange} />
             <RegisterButton onClick={handleRegister} />
         </div>
     )
