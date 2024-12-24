@@ -89,8 +89,18 @@ function App() {
     }
   };
 
-  const removeTask = (id) => {
-    setIncompletedTasks(incompletedTasks.filter((task) => task.id !== id));
+  const removeTask = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/tasks/${id}`);
+      console.log(response);
+      if (response.status === 200) {
+        setIncompletedTasks(incompletedTasks.filter((task) => task.id !== id));
+      } else {
+        console.error("Failed to remove task:", response.data);
+      }
+    } catch (error) {
+      console.error("Error removing task:", error);
+    }
   };
 
   return (
