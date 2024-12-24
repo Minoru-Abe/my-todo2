@@ -9,17 +9,21 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "assignee")
     private String assignee;
+
+    @Column(name = "status", nullable = false)
     private String status;
 
-    public Task(Long id, String name, String assignee, String status) {
-        this.id = id;
+    public Task(String name, String assignee, String status) {
         this.name = name;
         this.assignee = assignee;
         this.status = status;
     }
-
 
     // Getters and setters
 
