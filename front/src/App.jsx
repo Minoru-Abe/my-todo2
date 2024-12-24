@@ -21,7 +21,19 @@ function App() {
       }
     };
 
+    const fetchCompleteTasks = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/tasks/complete"
+        );
+        setCompletedTasks(response.data);
+      } catch (error) {
+        console.error("Error fetching complete tasks:", error);
+      }
+    };
+
     fetchIncompleteTasks();
+    fetchCompleteTasks();
   }, []);
 
   const addTask = async (name, assignee) => {
@@ -40,7 +52,9 @@ function App() {
 
   const completeTask = async (id) => {
     try {
-      const response = await axios.put(`http://localhost:8080/tasks/complete/${id}`);
+      const response = await axios.put(
+        `http://localhost:8080/tasks/complete/${id}`
+      );
 
       console.log(response);
 
@@ -56,10 +70,23 @@ function App() {
     }
   };
 
-  const revertTask = (id) => {
-    const taskToRevert = completedTasks.find((task) => task.id === id);
-    setIncompletedTasks([...incompletedTasks, taskToRevert]);
-    setCompletedTasks(completedTasks.filter((task) => task.id !== id));
+  const revertTask = async (id) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/tasks/revert/${id}`
+      );
+      console.log(response);
+
+      if (response.status === 200) {
+        const taskToRevert = completedTasks.find((task) => task.id === id);
+        setIncompletedTasks([...incompletedTasks, taskToRevert]);
+        setCompletedTasks(completedTasks.filter((task) => task.id !== id));
+      } else {
+        console.error("Failed to revert task:", response.data);
+      }
+    } catch (error) {
+      console.error("Error reverting task:", error);
+    }
   };
 
   const removeTask = (id) => {
