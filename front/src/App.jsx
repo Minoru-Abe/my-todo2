@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { InputArea } from "./molecules/InputArea";
 import { CompleteButton } from "./atoms/button/CompleteButton";
 import { RevertButton } from "./atoms/button/RevertButton";
@@ -8,9 +9,18 @@ function App() {
   const [incompletedTasks, setIncompletedTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
 
-  const addTask = (task, personInCharge) => {
-    setIncompletedTasks([...incompletedTasks, { task, personInCharge }]);
-    console.log(incompletedTasks);
+  const addTask = async (task, personInCharge) => {
+    try {
+      const response = await axios.post("http://localhost:8080/tasks", {
+        name: task,
+        assignee: personInCharge,
+        status: "incomplete",
+      });
+      console.log(response);
+      setIncompletedTasks([...incompletedTasks, response.data]);
+    } catch (error) {
+      console.error("Error creating task:", error);
+    }
   };
 
   const completeTask = (index) => {

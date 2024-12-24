@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/tasks")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TaskController {
 
     @Autowired
@@ -26,6 +27,7 @@ public class TaskController {
 
     @PostMapping
     public Task createTask(@RequestBody Task task) {
+        System.out.println(task);
         return taskService.createTask(task);
     }
 
