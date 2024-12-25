@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  my-todo2-postgres:
+    image: my-todo2-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: my_database
+      POSTGRES_USER: my_user
+      POSTGRES_PASSWORD: my_password
+
+  my-todo2-back:
+    image: my-todo2-back
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://my-todo2-postgres:5432/my_database
+      SPRING_DATASOURCE_USERNAME: my_user
+      SPRING_DATASOURCE_PASSWORD: my_password
+    depends_on:
+      - my-todo2-postgres
+
+  my-todo2-front:
+    image: my-todo2-front
+    ports:
+      - "3000:3000" # フロントエンドが使用するポート
+    environment:
+      REACT_APP_BACKEND_URL: http://my-todo2-back:8080
+    depends_on:
+      - my-todo2-back
