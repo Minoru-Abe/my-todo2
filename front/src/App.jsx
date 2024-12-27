@@ -8,12 +8,13 @@ import { RemoveButton } from "./atoms/button/RemoveButton";
 function App() {
   const [incompletedTasks, setIncompletedTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
     const fetchIncompleteTasks = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/tasks/incomplete"
+          `${API_BASE_URL}/tasks/incomplete`
         );
         setIncompletedTasks(response.data);
       } catch (error) {
@@ -24,7 +25,7 @@ function App() {
     const fetchCompleteTasks = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/tasks/complete"
+          `${API_BASE_URL}/tasks/complete`
         );
         setCompletedTasks(response.data);
       } catch (error) {
@@ -38,7 +39,7 @@ function App() {
 
   const addTask = async (name, assignee) => {
     try {
-      const response = await axios.post("http://localhost:8080/tasks", {
+      const response = await axios.post(`${API_BASE_URL}/tasks`, {
         name: name,
         assignee: assignee,
         status: "incomplete",
@@ -53,7 +54,7 @@ function App() {
   const completeTask = async (id) => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/tasks/complete/${id}`
+        `${API_BASE_URL}/tasks/complete/${id}`
       );
 
       console.log(response);
@@ -73,7 +74,7 @@ function App() {
   const revertTask = async (id) => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/tasks/revert/${id}`
+        `${API_BASE_URL}/tasks/revert/${id}`
       );
       console.log(response);
 
@@ -91,7 +92,7 @@ function App() {
 
   const removeTask = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/tasks/${id}`);
+      const response = await axios.delete(`${API_BASE_URL}/tasks/${id}`);
       console.log(response);
       if (response.status === 200) {
         setIncompletedTasks(incompletedTasks.filter((task) => task.id !== id));

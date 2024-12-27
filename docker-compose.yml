@@ -26,6 +26,6 @@ services:
     ports:
       - "3000:3000" # フロントエンドが使用するポート
     environment:
-      REACT_APP_BACKEND_URL: http://my-todo2-back:8080
+      REACT_APP_API_BASE_URL: http://my-todo2-back:8080
     depends_on:
       - my-todo2-back
