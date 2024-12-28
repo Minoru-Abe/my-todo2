@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   my-todo2-postgres:
-    image: my-todo2-postgres
+    image: aberu0810/my-todo2-postgres
     ports:
       - "5432:5432"
     environment:
@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: my_password
 
   my-todo2-back:
-    image: my-todo2-back
+    image: aberu0810/my-todo2-back
     ports:
       - "8080:8080"
     environment:
@@ -22,7 +22,7 @@ services:
       - my-todo2-postgres
 
   my-todo2-front:
-    image: my-todo2-front
+    image: aberu0810/my-todo2-front
     ports:
       - "3000:3000" # フロントエンドが使用するポート
     environment:
